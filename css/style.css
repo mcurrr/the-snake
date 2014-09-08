@@ -1,0 +1,47 @@
+.part {
+	width: 10px;
+	height: 10px;
+	background-color: gray;
+	border-radius: 3px;
+	position: relative;
+	left: 100px;
+	top: 100px;
+	border: 1px solid #D1D3D1;
+}
+
+.part:first-child {
+	background-color: red;
+}
+
+#parent {
+	width: 150px;
+	height: 150px;
+	border-radius: 5px;
+	border: 1px solid black;
+	background-color: #D1D3D1;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+
+#food {
+	width: 10px;
+	height: 10px;
+	background-color: green;
+	border-radius: 3px;
+	border: 1px solid #D1D3D1;
+	position: absolute;
+}
+
+#score {
+	position: fixed;
+	top: 200px;
+	left: 50px;
+	height: 70px;
+	width: 100px;
+	background-color: #FF80C0;
+	border: 1px dashed #FF0080;
+	color: #800080;
+	border-radius: 3px;
+	text-align: center;
+}
