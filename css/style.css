@@ -1,44 +1,77 @@
+* {
+	box-sizing: border-box;
+}
+
+.body {
+	text-align: center;
+}
 .part {
-	width: 10px;
-	height: 10px;
+	width: 50px;
+	height: 50px;
 	background-color: gray;
-	border-radius: 3px;
+	border-radius: 8px;
 	position: relative;
 	left: 100px;
 	top: 100px;
-	border: 1px solid #D1D3D1;
+	border: 3px solid #D1D3D1;
 }
 
 .part:first-child {
 	background-color: red;
 }
 
+#parent_wrap {
+	position: relative;
+	width: 100%;
+}
+
+#parent_wrap:after
+{
+content: '';
+display: block;
+clear: both;
+}
+
+#anoter_parent_wrap {
+	position: relative;
+	right: 50%;
+	float: right;
+}
+
+#parent_inner {
+	position: relative;
+	z-index: 1;
+	right: -50%;
+}
+
 #parent {
-	width: 150px;
-	height: 150px;
-	border-radius: 5px;
-	border: 1px solid black;
+	width: 700px;
+	height: 700px;
+	border-radius: 8px;
+	/*border: 3px solid black;*/
 	background-color: #D1D3D1;
-	position: absolute;
-	left: 20px;
-	top: 20px;
 }
 
 #food {
-	width: 10px;
-	height: 10px;
+	width: 50px;
+	height: 50px;
 	background-color: green;
-	border-radius: 3px;
-	border: 1px solid #D1D3D1;
-	position: absolute;
+	border-radius: 8px;
+	border: 3px solid #D1D3D1;
+	z-index: 999;
+}
+
+#score_wrap {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	height: 70px;
+	text-align: center;
 }
 
 #score {
-	position: fixed;
-	top: 200px;
-	left: 50px;
-	height: 70px;
-	width: 100px;
+	margin: auto;
+	height: 100%;
+	width: 300px;
 	background-color: #FF80C0;
 	border: 1px dashed #FF0080;
 	color: #800080;

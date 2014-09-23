@@ -1,26 +1,38 @@
 <!doctype html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>snake</title>
-	<link rel="stylesheet" href="bootstrap 3.1/css/bootstrap.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+	<div id="score_wrap">
+		<div id="score">
+			<span id = "score_number"></span><br>
+			<span id = "stage_number"></span><br>
+			<span id = "speed_number"></span>
+		</div>
+	</div>
 
-<div id="parent">	
-	<div class="part"></div>
-	<div class="part"></div>
-	<div class="part"></div>
-</div>
+	<div id="parent_wrap">
+		<div id="anoter_parent_wrap">
+			<div id="parent_inner">
+				<div id="parent">
+					<div class="part"></div>
+					<div class="part"></div>
+					<div class="part"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<div id='food'></div>
 
-<div id="score"></div>
+	<div id='food'></div>
 
-<script src="jquery-2.1.1.min.js"></script>
-<script src="bootstrap 3.1/js/bootstrap.js"></script>
-<script src="js/main.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="js/main.js"></script>
 
 </body>
 </html>

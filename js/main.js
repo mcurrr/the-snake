@@ -1,43 +1,47 @@
 
 // ---------------VARIABLES------------------------
 
-var step = 10;
+var step = 50;
+
+
+// -------------COORDINATES OF PARENT DIV-----------------
+
+var $field = $('#parent');
+var field_width = $field.width();
+var field_height = $field.height();
+var border = 0 /*parseInt($field.css("border"))*/;
+
+var field_top = $field.offset().top;
+var field_left = $field.offset().left;
+
 
 //---------------PRE-POSITION-----------------------
 
-var x_head = 50;
-var y_head = 50;
+var x_head = field_left + step *4;
+var y_head = field_top + step * 4;
+
 
 // ---------------DIRECTION------------------------
-
 
 var x = [];
 var y = [];
 
 var $parts = $('.part');
 
-// -------------COORDINATES OF PARENT DIV-----------------
 
-var $field = $('#parent');
-var $field_width = $field.width();
-var $field_height = $field.height();
-var $border_text = $field.css("border");
-var $border = parseInt($border_text);
 
-var $field_top = $field.offset().top;
-var $field_left = $field.offset().left;
 
 // ------------PORTAL COORDINATES--------------------
 
-var $portal_left = $field_left;
-var $portal_right = $field_left + $field_width + $border * 2;
-var $portal_up = $field_top;
-var $portal_down = $field_height + $field_top + $border * 2;
+var portal_left = field_left;
+var portal_right = field_left + field_width + border * 2;
+var portal_up = field_top;
+var portal_down = field_height + field_top + border * 2;
 
-console.log($portal_left);
-console.log($portal_right);
-console.log($portal_up);
-console.log($portal_down);
+console.log(portal_left);
+console.log(portal_right);
+console.log(portal_up);
+console.log(portal_down);
 
 
 
@@ -61,6 +65,30 @@ console.log($('.part').each(function(i){
 		$(this).offset();
 	}));
 
+// ------------FOOD FIRST POSITION-------------------
+
+var $food = $('#food');
+// var food_x = Math.round((portal_left - 0.5 + Math.random() * (portal_right - portal_left + 1 - step))/10)*10;
+// var food_y = Math.round((portal_up - 0.5 + Math.random() * (portal_down - portal_up + 1 - step))/10)*10;
+
+var steps_in_field = (portal_right - portal_left)/step;
+var x_generate = Math.round(0 - 0.5 + Math.random() * steps_in_field);
+var y_generate = Math.round(0 - 0.5 + Math.random() * steps_in_field);
+var food_x = portal_left + step * x_generate;
+var food_y = portal_up + step * y_generate;
+
+$food.offset({top: food_y, left: food_x});
+
+console.log ("steps_in_field = " + steps_in_field);
+console.log ("x_generate = " + x_generate);
+console.log ("y_generate = " + y_generate);
+console.log ("food_x = " + food_x);
+console.log ("food_y = " + food_y);
+
+console.log("$food.offset.left = " + $food.offset().left);
+console.log("$food.part.left = " + x_head);
+console.log($food.offset().left == x_head);
+console.log($food.offset().top == y_head);
 
 // переменным направления можно задать любые значения, лишь бы не undefind
 var left = 'left', right = 'right', up = 'up', down = 'down';
@@ -72,12 +100,18 @@ var pause = false;
 // --------------SCORE SCREEN---------------------
 
 var $score = $('#score');
-$score.html('<span id = "score_number"></span><br><span id = "stage_number"></span><br><span id = "speed_number"></span>');
 var $score_number = $('#score_number');
 var $stage_number = $('#stage_number');
 var $speed_number = $('#speed_number');
 var total_all = 0;
 
+// для начала
+$score_number.text("score: " + 0);
+$stage_number.text("stage: " + 1);
+$speed_number.text("speed: " + 50);
+
+
+// увеличение показателей
 var score_func = function(){
 
 	var $newParts = $(".part:gt(2)");
@@ -92,52 +126,50 @@ var score_func = function(){
 
 //---------------DIRECTION CHANGED----------------
 
-var changeDirection = function(){
-
-	$('*').on('keyup', function(e){
+$('*').on('keyup', function(e){
 
 
-			switch(e.keyCode){
+		switch(e.keyCode){
 
-			case 37: {
-				if(direction == right) break;
-				direction = left;
-				console.log(direction);
-				};
-			break;
-
-			case 39: {
-				if(direction == left) break;
-				direction = right;
-				console.log(direction);
+		case 37: {
+			if(direction == right) break;
+			direction = left;
+			console.log(direction);
 			};
-			break;
+		break;
 
-			case 38: {
-				if(direction == down) break;
-				direction = up;
-				console.log(direction);
-			};
-			break;
-
-			case 40: {
-				if(direction == up) break;
-				direction = down;
-				console.log(direction);
-			};
-			break;
-
-			case 32: {
-				theEnd();
-			};
-			break;
-
-			default: console.log(e.keyCode);
+		case 39: {
+			if(direction == left) break;
+			direction = right;
+			console.log(direction);
 		};
+		break;
 
-		return false; // предотвращает всплытие (двойное нажатие)
-	});
-};
+		case 38: {
+			if(direction == down) break;
+			direction = up;
+			console.log(direction);
+		};
+		break;
+
+		case 40: {
+			if(direction == up) break;
+			direction = down;
+			console.log(direction);
+		};
+		break;
+
+		case 32: {
+			theEnd();
+		};
+		break;
+
+		default: console.log(e.keyCode);
+	};
+
+	return false; // предотвращает всплытие (двойное нажатие)
+});
+
 
 var oposite_direction_change = function(){
 	
@@ -171,7 +203,7 @@ var colaps = function(){
 	for(var i = 1; i<x.length; i++){
 		if((x[0] == x[i]) && (y[0] == y[i])){
 			alert("Game Over!");
-			theEnd();				
+			theEnd();
 		}
 	};
 };
@@ -187,10 +219,19 @@ var levelUp = function(){
 
 	var $newParts = $(".part:gt(1)");
 
-	if(!($parts.length%10)) {
-		$field_height -= step;
-		$field_width -= step;
-		$('#parent').css({width: $field_width, height: $field_height});
+	if(!($parts.length%5)) {
+
+		prev_direction = direction = right;
+
+
+		field_height = field_height - step;
+		field_width = field_width - step;
+
+		$('#parent').css({width: field_width, height: field_height});
+
+		$parts.hide();
+		$food.hide();
+		$newParts.remove();
 
 		theEnd();
 	
@@ -198,13 +239,19 @@ var levelUp = function(){
 
 		++stageCount;
 		alert("stage " + stageCount);
-		$newParts.remove();
 
-		$portal_right = $field_left + $field_width + $border * 2;
-		$portal_down = $field_height + $field_top + $border * 2;
+		field_top = $field.offset().top;
+		field_left = $field.offset().left;
 
-		var x_head = 50;
-		var y_head = 50;
+
+		portal_left = field_left;
+		portal_right = field_left + field_width + border * 2;
+		portal_up = field_top;
+		portal_down = field_height + field_top + border * 2;
+
+		x_head = portal_left + step *4;
+		y_head = portal_up + step * 4;
+
 
 		for (var i = 0; i < $parts.length; i++) {
 			x[i] = x_head -= step;
@@ -215,37 +262,41 @@ var levelUp = function(){
 			$($parts[i]).offset({top: y[i], left: x[i]});
 		};
 
-		direction = right;
+		
 
 		snakeTime = setInterval (move, time);
+		$parts.show();
+		$food.show();
+
+		console.log(direction); 
 	}
 };
 
 // ---------------GENERATING FOOD-----------------------
 
-var $food = $('#food');
-
-var $food_x = Math.round(($portal_left - 0.5 + Math.random() * ($portal_right - $portal_left + 1 - step))/10)*10;
-var $food_y = Math.round(($portal_up - 0.5 + Math.random() * ($portal_down - $portal_up + 1 - step))/10)*10;
-$food.offset({top: $food_y, left: $food_x});
 
 var generateNewFood = function(){
-	$food_x = Math.round(($portal_left - 0.5 + Math.random() * ($portal_right - $portal_left - (step * 2) + 1))/10)*10;
-	$food_y = Math.round(($portal_up - 0.5 + Math.random() * ($portal_down - $portal_up - (step * 2) + 1))/10)*10;			
+
+	steps_in_field = (portal_right - portal_left)/step;
+	x_generate = Math.round(0 - 0.5 + Math.random() * steps_in_field);
+	y_generate = Math.round(0 - 0.5 + Math.random() * steps_in_field);
+	food_x = portal_left + step * x_generate;
+	food_y = portal_up + step * y_generate;
 	
+	// предотвратить появление новой еды в теле змеи
 	for(var i = 0; i<$parts.length; i++) {
-		if($food_x == x[i] || $food_y == y[i]) {
+		if(food_x == x[i] || food_y == y[i]) {
 			generateNewFood();
 		}
 	};
 
-	$food.offset({top: $food_y, left: $food_x});
+	$food.offset({top: food_y, left: food_x});
 };
 
 // -----------------EATING---------------------------
 
-var isEating = function(){
-	if ((x[0] == $food_x) && (y[0] == $food_y)) return true;
+var isEating = function() {
+	if (($food.offset().left == x[0]) && ($food.offset().top == y[0])) return true;
 	return false;
 };
 
@@ -262,19 +313,15 @@ var snakeTime;
 function move (){
 
 	oposite_direction_change();
-	changeDirection();
 
 	if(direction == oposite_direction) direction = prev_direction
-		else prev_direction = direction;	
+		else prev_direction = direction;
 
 	colaps();
 
-	console.log(x);
-	console.log(y);
-	console.log(time);
+	console.log(direction);
 
 	var $newParts = $(".part:gt(2)");
-	console.log($newParts.length);
 
 	//SHOWING SNAKE WITH PRESENT COORDINATES
 	
@@ -289,48 +336,48 @@ function move (){
 	switch(direction) {
 		
 		case left: {
-			if(x[0] <= $portal_left) {
-				x.unshift($portal_right - step);
+			if(x[0] <= portal_left) {
+				x.unshift(portal_right - step);
 				y.unshift(y[0]);	
 			}
 			else {
-				x.unshift((Math.round((x[0] - step)/10))*10);
+				x.unshift(x[0] - step);
 				y.unshift(y[0]);
 			}
 		};        
 		break;
 		
 		case right: {
-			if(x[0] >= $portal_right - step) {
-				x.unshift($portal_left);
+			if(x[0] >= portal_right - step) {
+				x.unshift(portal_left);
 				y.unshift(y[0]);	
 			}
 			else {
-			x.unshift((Math.round((x[0] + step)/10))*10);
+			x.unshift(x[0] + step);
 			y.unshift(y[0]);
 			}
 		};
 		break;
 		
 		case up: {
-			if(y[0] <= $portal_up) {
-				y.unshift($portal_down - step);
+			if(y[0] <= portal_up) {
+				y.unshift(portal_down - step);
 				x.unshift(x[0]);	
 			}
 			else {
-			y.unshift((Math.round((y[0] - step)/10))*10);
+			y.unshift(y[0] - step);
 			x.unshift(x[0]);
 			}
 		};
 		break;
 		
 		case down: {
-			if(y[0] >= $portal_down - step) {
-				y.unshift($portal_up);
+			if(y[0] >= portal_down - step) {
+				y.unshift(portal_up);
 				x.unshift(x[0]);	
 			}
 			else {
-			y.unshift((Math.round((y[0] + step)/10))*10);
+			y.unshift(y[0] + step);
 			x.unshift(x[0]);
 			}
 		};
