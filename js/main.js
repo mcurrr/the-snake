@@ -1,15 +1,26 @@
 
-// ---------------VARIABLES------------------------
+// ---------------GLOBAL VARIABLES------------------------
 
 var step = 50;
+var time = 200;
+var stageCount = 1;
+var x = [];
+var y = [];
 
+// don't now why but this  variables must contain something. anything besides undefind
+var left = 'left', right = 'right', up = 'up', down = 'down';
+
+var prev_direction = direction = right;
+var oposite_direction;
+var pause = false;
+var snakeTime;
 
 // -------------COORDINATES OF PARENT DIV-----------------
 
 var $field = $('#parent');
 var field_width = $field.width();
 var field_height = $field.height();
-var border = 0 /*parseInt($field.css("border"))*/;
+var border = 0 /*parseInt($field.css("border"))*/; //depends on included border
 
 var field_top = $field.offset().top;
 var field_left = $field.offset().left;
@@ -21,29 +32,16 @@ var x_head = field_left + step *4;
 var y_head = field_top + step * 4;
 
 
-// ---------------DIRECTION------------------------
-
-var x = [];
-var y = [];
+// ------------PORTAL COORDINATES--------------------
 
 var $parts = $('.part');
-
-
-
-
-// ------------PORTAL COORDINATES--------------------
 
 var portal_left = field_left;
 var portal_right = field_left + field_width + border * 2;
 var portal_up = field_top;
 var portal_down = field_height + field_top + border * 2;
 
-console.log(portal_left);
-console.log(portal_right);
-console.log(portal_up);
-console.log(portal_down);
-
-
+// -------------SNAKE START POSITION------------------
 
 for (var i = 0; i < $parts.length; i++) {
 	x[i] = x_head -= step;
@@ -53,23 +51,14 @@ for (var i = 0; i < $parts.length; i++) {
 var x_0 = x;
 var y_0 = y;
 
-console.log(x);
-console.log(y);
-
 for (var i = 0; i < $parts.length; i++) {
 	$($parts[i]).offset({top: y[i], left: x[i]});
 };
 
 
-console.log($('.part').each(function(i){
-		$(this).offset();
-	}));
-
 // ------------FOOD FIRST POSITION-------------------
 
 var $food = $('#food');
-// var food_x = Math.round((portal_left - 0.5 + Math.random() * (portal_right - portal_left + 1 - step))/10)*10;
-// var food_y = Math.round((portal_up - 0.5 + Math.random() * (portal_down - portal_up + 1 - step))/10)*10;
 
 var steps_in_field = (portal_right - portal_left)/step;
 var x_generate = Math.round(0 - 0.5 + Math.random() * steps_in_field);
@@ -79,23 +68,9 @@ var food_y = portal_up + step * y_generate;
 
 $food.offset({top: food_y, left: food_x});
 
-console.log ("steps_in_field = " + steps_in_field);
-console.log ("x_generate = " + x_generate);
-console.log ("y_generate = " + y_generate);
-console.log ("food_x = " + food_x);
-console.log ("food_y = " + food_y);
 
-console.log("$food.offset.left = " + $food.offset().left);
-console.log("$food.part.left = " + x_head);
-console.log($food.offset().left == x_head);
-console.log($food.offset().top == y_head);
 
-// переменным направления можно задать любые значения, лишь бы не undefind
-var left = 'left', right = 'right', up = 'up', down = 'down';
 
-var prev_direction = direction = right;
-var oposite_direction;
-var pause = false;
 
 // --------------SCORE SCREEN---------------------
 
@@ -105,13 +80,13 @@ var $stage_number = $('#stage_number');
 var $speed_number = $('#speed_number');
 var total_all = 0;
 
-// для начала
+// for the very start
 $score_number.text("score: " + 0);
 $stage_number.text("stage: " + 1);
 $speed_number.text("speed: " + 50);
 
 
-// увеличение показателей
+// increasing score
 var score_func = function(){
 
 	var $newParts = $(".part:gt(2)");
@@ -121,13 +96,11 @@ var score_func = function(){
 	$score_number.text("score: " + total_all);
 	$stage_number.text("stage: " + stageCount);
 	$speed_number.text("speed: " + (250 - time));
-
 };
 
 //---------------DIRECTION CHANGED----------------
 
 $('*').on('keyup', function(e){
-
 
 		switch(e.keyCode){
 
@@ -167,7 +140,7 @@ $('*').on('keyup', function(e){
 		default: console.log(e.keyCode);
 	};
 
-	return false; // предотвращает всплытие (двойное нажатие)
+	return false; // avoid double keydown (bubbling)
 });
 
 
@@ -210,70 +183,63 @@ var colaps = function(){
 
 // ---------------LEVEL UP------------------------------
 
-var time = 200;
-var stageCount = 1;
-
-
 var levelUp = function(){
-
 
 	var $newParts = $(".part:gt(1)");
 
-	if(!($parts.length%5)) {
+	if(!($parts.length%7)) {
 
 		prev_direction = direction = right;
-
-
+// decreasing field
 		field_height = field_height - step;
 		field_width = field_width - step;
 
-		$('#parent').css({width: field_width, height: field_height});
+		theEnd();
 
 		$parts.hide();
 		$food.hide();
 		$newParts.remove();
 
-		theEnd();
-	
-		time -= 30;
-
 		++stageCount;
 		alert("stage " + stageCount);
 
-		field_top = $field.offset().top;
-		field_left = $field.offset().left;
+		$('#parent').animate({width: field_width, height: field_height}, 2000, function() 
+		{
 
+			time -= 30;
 
-		portal_left = field_left;
-		portal_right = field_left + field_width + border * 2;
-		portal_up = field_top;
-		portal_down = field_height + field_top + border * 2;
+			field_top = $field.offset().top;
+			field_left = $field.offset().left;
 
-		x_head = portal_left + step *4;
-		y_head = portal_up + step * 4;
+	// recalculate of portals with new field sizes
+			portal_left = field_left;
+			portal_right = field_left + field_width + border * 2;
+			portal_up = field_top;
+			portal_down = field_height + field_top + border * 2;
 
+	// setting snake start position within new field
+			x_head = portal_left + step *4;
+			y_head = portal_up + step * 4;
 
-		for (var i = 0; i < $parts.length; i++) {
-			x[i] = x_head -= step;
-			y[i] = y_head;
-		};
+			for (var i = 0; i < $parts.length; i++) {
+				x[i] = x_head -= step;
+				y[i] = y_head;
+			};
 
-		for (var i = 0; i < $parts.length; i++) {
-			$($parts[i]).offset({top: y[i], left: x[i]});
-		};
+			for (var i = 0; i < $parts.length; i++) {
+				$($parts[i]).offset({top: y[i], left: x[i]});
+			};
 
-		
-
-		snakeTime = setInterval (move, time);
-		$parts.show();
-		$food.show();
-
-		console.log(direction); 
+	// starting new round
+			$parts.fadeIn();
+			$food.show();
+			generateNewFood();
+			snakeTime = setInterval (move, time);
+		});
 	}
 };
 
 // ---------------GENERATING FOOD-----------------------
-
 
 var generateNewFood = function(){
 
@@ -283,7 +249,7 @@ var generateNewFood = function(){
 	food_x = portal_left + step * x_generate;
 	food_y = portal_up + step * y_generate;
 	
-	// предотвратить появление новой еды в теле змеи
+	// avoid creating food inside snake body
 	for(var i = 0; i<$parts.length; i++) {
 		if(food_x == x[i] || food_y == y[i]) {
 			generateNewFood();
@@ -291,6 +257,7 @@ var generateNewFood = function(){
 	};
 
 	$food.offset({top: food_y, left: food_x});
+
 };
 
 // -----------------EATING---------------------------
@@ -300,15 +267,16 @@ var isEating = function() {
 	return false;
 };
 
+// -----------------TAILING)-------------------------
+
 var createTaile = function(){
 	$('#parent').append('<div class="part"></div>');
 	$parts = $('.part');
-	$parts.last().hide();   //чтобы не было секундногоьпоявления нового дива на дефолтном месте
+	$parts.last().hide();// to avoid second-long showing new div on defolt place - connect with goto* (will see it below)
 };
 
 // ---------------MOOVING AND ACTING------------------
 
-var snakeTime;
 
 function move (){
 
@@ -316,22 +284,20 @@ function move (){
 
 	if(direction == oposite_direction) direction = prev_direction
 		else prev_direction = direction;
-
+// checking for selfeating
 	colaps();
-
-	console.log(direction);
 
 	var $newParts = $(".part:gt(2)");
 
-	//SHOWING SNAKE WITH PRESENT COORDINATES
-	
-	$parts.last().show();
+//SHOWING SNAKE WITH PRESENT COORDINATES
+
+	$parts.last().fadeIn(); // goto* remember?)
 
 	$parts.each(function(i){
 		$(this).offset({top: y[i], left: x[i]});
 	});
 
-	//CHANGING NEXT COORDINATES
+//CHANGING NEXT COORDINATES
 
 	switch(direction) {
 		
@@ -344,7 +310,7 @@ function move (){
 				x.unshift(x[0] - step);
 				y.unshift(y[0]);
 			}
-		};        
+		};
 		break;
 		
 		case right: {
@@ -384,10 +350,8 @@ function move (){
 		break;
 	};
 
-
 	x.length = $parts.length + 1;
 	y.length = $parts.length + 1;
-
 
 	if(isEating()){
 		levelUp();
