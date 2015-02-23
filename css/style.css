@@ -1,5 +1,7 @@
 * {
-	box-sizing: border-box;
+-webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+        box-sizing: border-box;
 }
 
 .body {
@@ -10,7 +12,8 @@
 	width: 50px;
 	height: 50px;
 	background-color: gray;
-	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	        border-radius: 8px;
 	position: relative;
 	left: 100px;
 	top: 100px;
@@ -18,7 +21,7 @@
 }
 
 .part:first-child {
-	background-color: red;
+	background-color: blue;
 }
 
 #parent_wrap {
@@ -48,8 +51,8 @@ clear: both;
 #parent {
 	width: 700px;
 	height: 700px;
-	border-radius: 8px;
-	/*border: 3px solid black;*/
+	-webkit-border-radius: 8px;
+	        border-radius: 8px;
 	background-color: #D1D3D1;
 }
 
@@ -57,7 +60,8 @@ clear: both;
 	width: 50px;
 	height: 50px;
 	background-color: green;
-	border-radius: 8px;
+	-webkit-border-radius: 8px;
+	        border-radius: 8px;
 	border: 3px solid #D1D3D1;
 	z-index: 999;
 }
@@ -76,6 +80,7 @@ clear: both;
 	background-color: #FF80C0;
 	border: 1px dashed #FF0080;
 	color: #800080;
-	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	        border-radius: 3px;
 	text-align: center;
 }

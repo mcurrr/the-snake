@@ -68,10 +68,6 @@ var food_y = portal_up + step * y_generate;
 
 $food.offset({top: food_y, left: food_x});
 
-
-
-
-
 // --------------SCORE SCREEN---------------------
 
 var $score = $('#score');
