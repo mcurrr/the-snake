@@ -1,0 +1,17 @@
+{
+  "name": "snake",
+  "version": "2.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bootstrap": "^3.3.2",
+    "gulp": "^3.8.11",
+    "gulp-livereload": "^3.8.0",
+    "jquery": "^2.1.3"
+  }
+}

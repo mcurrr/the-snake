@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/custom.css"></head>
+<body>
+
+	<section id="snake">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 text-center" id="snake_inner">
+					<div id="snake_wrap">
+						<div id="snake_another_wrap">
+							<div class="thumbnail">
+								<div class="jumbotron" id="parent" onclick="snakePause()">
+									<div id="snakeScore" class="score">
+										<span id = "score_number">
+											score:
+											<span id="score_number_inner"></span>
+										</span>
+										<br>
+										<span id = "stage_number"></span>
+										<br>
+										<span id = "speed_number"></span>
+									</div>
+								</div>
+
+								<div id="toStart" onclick="snakeStart()"> <i class='fa fa-play fa-5x'></i>
+								</div>
+								<div id="onPause" onclick="snakePause()"> <i class='fa fa-pause fa-5x'></i>
+								</div>
+								<div id="toReset" onclick="snakeReset()">
+									<i class='fa fa-refresh fa-spin fa-5x'></i>
+								</div>
+
+								<div class="row" id='buttonRow'>
+									<div class="col-xs-12">
+										<div class="btn-group btn-group-justified" role="group">
+											<a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Play" onclick="snakeStart()">
+												<span class='fa fa-play'></span>
+											</a>
+											<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Pause" onclick="snakePause()">
+												<span class='fa fa-pause fa-lg'></span>
+											</a>
+											<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Reset" onclick="snakeReset()">
+												<span class='fa fa-refresh fa-lg'></span>
+											</a>
+											<a class="btn btn-info" data-toggle="tooltip" data-placement="bottom" title="Help" onclick="snakeHelpInfo()">
+												<span class='fa fa-cogs'></span>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- MODALS -->
+		<div class="modal fade" id="snakeInfoModal" tabindex="-1" role="dialog" aria-labelledby="snakeInfoLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modalCustom">
+					<div class="modal-header bg-info">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="snakeInfoLabel">Help</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info center-block" data-dismiss="modal">Good luck</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="snakeWarningModal" tabindex="-1" role="dialog" aria-labelledby="snakeWarningLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modalCustom">
+					<div class="modal-header bg-warning">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="snakeWarningLabel">Maybe next time</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-warning center-block" data-dismiss="modal">Don't give up</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="snakeSuccessModal" tabindex="-1" role="dialog" aria-labelledby="snakeSuccessLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content modalCustom">
+					<div class="modal-header bg-success">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="snakeSuccessLabel">You go girl!</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success center-block" data-dismiss="modal">Congrats</button>
+					</div>
+				</div>
+			</div>
+		</div>
+<!-- END OF MODALS -->
+	</section>
+
+	<script src='node_modules/jquery/dist/jquery.js'></script>
+	<script src='node_modules/bootstrap/dist/js/bootstrap.js'></script>
+	<script src='js/sizes.js'></script>
+	<script src='js/snake.js'></script>
+</body>
+</html>
